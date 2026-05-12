@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STATIONWAVE — Live Audio Rooms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ==================== HOME SCREEN ==================== -->
+<div id="home" class="screen active">
+  <nav class="nav">
+    <div class="logo">
+      STATIONWAVE
+      <span>LIVE AUDIO ROOMS</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-ghost" onclick="openJoinModal()">JOIN ROOM</button>
+      <button class="btn btn-primary" onclick="openCreateModal()">GO LIVE</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">⚡ REAL-TIME AUDIO BROADCASTING</div>
+    <h1>
+      <span class="line1">YOUR VOICE,</span>
+      <span class="line2">LIVE.</span>
+    </h1>
+    <p>Create a live audio room in seconds. Share a link. Anyone in the world can tune in.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-hero" onclick="openCreateModal()">🎙 START YOUR STATION</button>
+      <button class="btn btn-outline btn-hero" onclick="openJoinModal()">JOIN A ROOM</button>
+    </div>
+  </div>
+
+  <div class="live-rooms-section">
+    <div class="section-label">LIVE NOW</div>
+    <div class="rooms-grid" id="rooms-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ROOM SCREEN ==================== -->
+<div id="room" class="screen">
+  <nav class="room-nav">
+    <div class="logo" onclick="goHome()" style="cursor:pointer">
+      STATIONWAVE
+      <span>LIVE AUDIO ROOMS</span>
+    </div>
+    <div class="room-info">
+      <div class="live-dot">LIVE</div>
+      <div class="room-title-nav" id="room-title-nav">—</div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-ghost" onclick="leaveRoom()">LEAVE</button>
+    </div>
+  </nav>
+
+  <div class="room-body">
+    <!-- Stage -->
+    <div class="stage">
+      <div class="stage-header">
+        <h1 id="stage-room-title">Room Name</h1>
+        <p id="stage-room-desc">Description</p>
+        <div class="stage-meta">
+          <div class="live-dot">LIVE</div>
+          <span class="listener-count" id="listener-count-display">0 LISTENERS</span>
+          <div class="tag genre" id="stage-genre">MUSIC</div>
+        </div>
+      </div>
+
+      <!-- Audio Visualizer -->
+      <div class="visualizer-container">
+        <div class="visualizer-label">AUDIO SIGNAL</div>
+        <canvas id="visualizer-canvas"></canvas>
+        <div class="audio-controls">
+          <button class="mic-btn muted" id="mic-btn" onclick="toggleMic()">🎙</button>
+          <div class="status-text">
+            <div class="label">YOUR ROLE</div>
+            <div class="value" id="role-display">LISTENER</div>
+            <div class="label" style="margin-top:4px">STATUS</div>
+            <div class="value" id="mic-status">MUTED</div>
+          </div>
+          <div class="vol-control">
+            <label>VOL</label>
+            <input type="range" id="vol-slider" min="0" max="100" value="80" oninput="setVolume(this.value)">
+            <span class="highlight" id="vol-display" style="font-family:'Space Mono',monospace;font-size:11px">80</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Listeners -->
+      <div>
+        <div class="section-title">IN THE ROOM</div>
+        <div class="listeners-grid" id="listeners-grid"></div>
+      </div>
+
+      <!-- Share link -->
+      <div>
+        <div class="section-title">SHARE THIS STATION</div>
+        <div class="share-box">
+          <div class="share-url" id="share-url">—</div>
+          <button class="btn btn-outline copy-btn" onclick="copyRoomLink()">COPY LINK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat panel -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <h3>LIVE CHAT</h3>
+        <span class="chat-count" id="msg-count">0 MESSAGES</span>
+      </div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input-area">
+        <div class="quick-reactions">
+          <button class="react-btn" onclick="sendReaction('🔥')">🔥</button>
+          <button class="react-btn" onclick="sendReaction('❤️')">❤️</button>
+          <button class="react-btn" onclick="sendReaction('🎵')">🎵</button>
+          <button class="react-btn" onclick="sendReaction('👏')">👏</button>
+          <button class="react-btn" onclick="sendReaction('🚀')">🚀</button>
+          <button class="react-btn" onclick="sendReaction('💜')">💜</button>
+        </div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="chat-input" type="text" placeholder="Say something…" maxlength="200"
+            onkeydown="if(event.key==='Enter')sendMessage()">
+          <button class="send-btn" onclick="sendMessage()">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CREATE MODAL ==================== -->
+<div class="modal-overlay" id="create-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModals()">✕</button>
+    <h2>GO LIVE</h2>
+    <p>Set up your station. Anyone with the link can tune in.</p>
+    <div class="field">
+      <label>YOUR NAME</label>
+      <input type="text" id="create-name" placeholder="e.g. DJ Nova" maxlength="30">
+    </div>
+    <div class="field">
+      <label>ROOM TITLE</label>
+      <input type="text" id="create-title" placeholder="e.g. Late Night Vibes" maxlength="60">
+    </div>
+    <div class="field">
+      <label>DESCRIPTION</label>
+      <input type="text" id="create-desc" placeholder="What's the vibe?" maxlength="120">
+    </div>
+    <div class="field">
+      <label>GENRE / CATEGORY</label>
+      <select id="create-genre">
+        <option>Music</option>
+        <option>Talk</option>
+        <option>Podcast</option>
+        <option>Lo-Fi</option>
+        <option>Hip-Hop</option>
+        <option>Electronic</option>
+        <option>R&B</option>
+        <option>Chill</option>
+        <option>News</option>
+        <option>Gaming</option>
+        <option>Sports</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;font-size:13px;margin-top:8px" onclick="createRoom()">
+      🎙 START BROADCASTING
+    </button>
+  </div>
+</div>
+
+<!-- ==================== JOIN MODAL ==================== -->
+<div class="modal-overlay" id="join-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModals()">✕</button>
+    <h2>JOIN ROOM</h2>
+    <p>Enter a room link or room ID to join a live station.</p>
+    <div class="field">
+      <label>YOUR NAME</label>
+      <input type="text" id="join-name" placeholder="e.g. Listener_42" maxlength="30">
+    </div>
+    <div class="field">
+      <label>ROOM LINK OR ID</label>
+      <input type="text" id="join-id" placeholder="e.g. chill123 or full link" maxlength="200">
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;font-size:13px;margin-top:8px" onclick="joinRoom()">
+      🎧 JOIN STATION
+    </button>
+  </div>
+</div>
+
+<!-- ==================== NAME PROMPT (auto join) ==================== -->
+<div class="name-prompt" id="name-prompt" style="display:none">
+  <div class="modal">
+    <h2>WHAT'S YOUR NAME?</h2>
+    <p style="margin-bottom:24px">You're joining a live station. Pick a display name.</p>
+    <div class="field">
+      <input type="text" id="prompt-name" placeholder="Your display name" maxlength="30">
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;font-size:13px" onclick="submitPromptName()">
+      ENTER ROOM
+    </button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="http://localhost:3001/socket.io/socket.io.js"></script>
+<script src="app.js"></script>
+</body>
+</html> 
