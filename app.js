@@ -1,21 +1,3 @@
-/* =============================================
-   STATIONWAVE — app.js
-   
-   Audio flow:
-   HOST:
-     1. getUserMedia() → mic stream
-     2. Create Peer(uniqueId) connected to /peerjs
-     3. Emit webrtc:host_broadcasting { peerId } via Socket.io
-     4. peer.on('call') → answer every incoming call with mic stream
-     5. Visualizer reads mic via AudioContext analyser
-
-   LISTENER:
-     1. Create Peer() connected to /peerjs
-     2. On webrtc:host_started { peerId } → peer.call(hostPeerId, null)
-     3. call.on('stream') → pipe to hidden <audio> element → autoplay
-     4. Visualizer reads incoming stream via AudioContext analyser
-   ============================================= */
-
 'use strict';
 
 /* ── Config ── */
