@@ -19,7 +19,7 @@
 'use strict';
 
 /* ── Config ── */
-const API_BASE  = 'http://localhost:3001';
+const API_BASE  = window.SW_CONFIG.BACKEND_URL;
 const PEER_HOST = 'localhost';
 const PEER_PORT = 3001;
 const PEER_PATH = '/peerjs';
