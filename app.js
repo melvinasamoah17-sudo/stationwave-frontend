@@ -493,6 +493,7 @@ async function enterRoom(room, isHost) {
   }
 
   if (history.pushState) history.pushState(null, '', `?room=${room.id}`);
+  if (isHost) injectMixerPanel();
 }
 
 /* ═══════════════════════════════════════════
