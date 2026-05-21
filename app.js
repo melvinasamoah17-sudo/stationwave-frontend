@@ -1,7 +1,9 @@
 'use strict';
 
 /* ── Config ── */
-const API_BASE  = window.SW_CONFIG.BACKEND_URL;
+const API_BASE = (window.SW_CONFIG && window.SW_CONFIG.BACKEND_URL) 
+  ? window.SW_CONFIG.BACKEND_URL 
+  : 'https://stationwave-backend-production.up.railway.app';
 const PEER_HOST = 'localhost';
 const PEER_PORT = 3001;
 const PEER_PATH = '/peerjs';
