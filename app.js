@@ -518,6 +518,7 @@ function leaveRoom(silent = false) {
   }
 
   /* Clean up Web Audio */
+  if (typeof mixerDestroyer === 'function') mixerDestroy();
   if (state.animFrame)  { cancelAnimationFrame(state.animFrame); state.animFrame = null; }
   if (state.audioCtx)   { state.audioCtx.close().catch(()=>{}); state.audioCtx = null; }
 
