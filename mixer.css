@@ -1,0 +1,408 @@
+/* =============================================
+   STATIONWAVE — mixer CSS
+   Append this to the bottom of style.css
+   ============================================= */
+
+/* ── DJ Mixer Panel ── */
+.dj-mixer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dj-mixer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,60,172,0.06), transparent 70%);
+  pointer-events: none;
+}
+
+.mixer-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.mixer-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+
+.mixer-subtitle {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--muted);
+}
+
+/* ── Channels ── */
+.mixer-channels {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+.mixer-channel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.channel-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ── Level meter ── */
+.meter-wrap { }
+
+.meter-track {
+  height: 6px;
+  background: var(--surface2);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.meter-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #00f5d4, #7b2fff);
+  transition: width 0.08s ease, background 0.2s;
+}
+
+/* ── Fader ── */
+.fader-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fader-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.fader {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 3px;
+  background: var(--surface2);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.fader::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--glow);
+  cursor: pointer;
+  border: 2px solid var(--bg);
+}
+
+.fader-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--accent3);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── Mic button ── */
+.mixer-mic-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid var(--accent);
+  background: rgba(255,60,172,0.08);
+  color: var(--accent);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mixer-mic-btn.active {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 0 20px var(--glow);
+  animation: micPulse 2s ease-in-out infinite;
+}
+
+.mixer-mic-btn.muted {
+  border-color: var(--muted);
+  color: var(--muted);
+  background: transparent;
+}
+
+.channel-status {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* ── File picker ── */
+.file-pick-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px dashed rgba(0,245,212,0.4);
+  color: var(--accent3);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(0,245,212,0.04);
+}
+
+.file-pick-btn:hover {
+  border-color: var(--accent3);
+  background: rgba(0,245,212,0.08);
+}
+
+.music-filename {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Divider ── */
+.mixer-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-top: 24px;
+}
+
+.divider-line {
+  width: 1px;
+  flex: 1;
+  background: var(--border);
+  min-height: 20px;
+}
+
+.divider-icon {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--accent2);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+/* ── Transport ── */
+.transport {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.transport-time {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.time-sep { color: var(--muted); }
+
+.music-status {
+  font-size: 9px;
+  letter-spacing: 3px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.music-status.playing  { color: var(--accent3); border: 1px solid rgba(0,245,212,0.3); }
+.music-status.paused   { color: var(--accent);  border: 1px solid rgba(255,60,172,0.3); }
+.music-status.stopped  { color: var(--muted);   border: 1px solid var(--border); }
+.music-status.loaded   { color: var(--accent2); border: 1px solid rgba(123,47,255,0.3); }
+
+/* ── Progress bar ── */
+.progress-wrap {
+  position: relative;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.progress-track {
+  position: absolute;
+  left: 0; right: 0;
+  height: 4px;
+  background: var(--surface2);
+  border-radius: 2px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  border-radius: 2px;
+  transition: width 0.5s linear;
+}
+
+.progress-seek {
+  position: absolute;
+  left: 0; right: 0;
+  width: 100%;
+  -webkit-appearance: none;
+  height: 4px;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.progress-seek::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--glow);
+  cursor: pointer;
+}
+
+/* ── Transport buttons ── */
+.transport-btns {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.t-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.t-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.t-btn.play:not(:disabled) {
+  border-color: var(--accent3);
+  color: var(--accent3);
+  background: rgba(0,245,212,0.08);
+}
+.t-btn.play:not(:disabled):hover {
+  background: rgba(0,245,212,0.16);
+}
+
+.t-btn.pause:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255,60,172,0.08);
+}
+
+.t-btn.stop {
+  border-color: var(--muted);
+  color: var(--muted);
+}
+.t-btn.stop:hover { color: var(--text); }
+
+.loop-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.loop-toggle input[type="checkbox"] {
+  accent-color: var(--accent2);
+  cursor: pointer;
+}
+
+/* ── Audio status badge (in stage header) ── */
+.audio-status-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: var(--surface2);
+}
+
+.audio-status-badge.live {
+  color: var(--accent3);
+  border-color: rgba(0,245,212,0.4);
+  background: rgba(0,245,212,0.08);
+  animation: pulse 2s infinite;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .mixer-channels {
+    grid-template-columns: 1fr;
+  }
+  .mixer-divider {
+    flex-direction: row;
+    padding-top: 0;
+  }
+  .divider-line {
+    width: auto;
+    height: 1px;
+    flex: 1;
+    min-height: unset;
+  }
+  .transport-btns { gap: 6px; }
+  .t-btn { padding: 7px 10px; font-size: 9px; }
+}
